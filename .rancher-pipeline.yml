@@ -3,7 +3,10 @@ stages:
   steps:
   - runScriptConfig:
       image: maven:3.8.1-jdk-8
-      shellScript: mvn clean install
+      shellScript: |-
+        mvn clean
+        mvn package
+        mvn install
 - name: Publish
   steps:
   - publishImageConfig:
