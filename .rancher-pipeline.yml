@@ -6,10 +6,10 @@ stages:
       shellScript: |-
         num=`sed -n -e "/<mirrors>/=" $MAVEN_HOME/conf/settings.xml`
          sed -i "${num}a <mirror>" $MAVEN_HOME/conf/settings.xml
-        sed -i "`expr $num + 1`a <id>aliyunmaven</id>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 1`a <id>localmaven</id>" $MAVEN_HOME/conf/settings.xml
         sed -i "`expr $num + 2`a <mirrorOf>*</mirrorOf>" $MAVEN_HOME/conf/settings.xml
         sed -i "`expr $num + 3`a <name>Nexus</name>" $MAVEN_HOME/conf/settings.xml
-        sed -i "`expr $num + 4`a <url>https://nexus-devops.dfcv.com.cn/repository/maven-central/</url>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 4`a <url>https://nexus-devops.dfcv.com.cn/repository/maven-public/</url>" $MAVEN_HOME/conf/settings.xml
         sed -i "`expr $num + 5`a </mirror>" $MAVEN_HOME/conf/settings.xml
         mvn clean install
 - name: Publish
