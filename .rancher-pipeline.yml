@@ -3,15 +3,23 @@ stages:
   steps:
   - runScriptConfig:
       image: maven:3-jdk-7
-      shellScript: mvn clean install
+      shellScript: |-
+        num=`sed -n -e "/<mirrors>/=" $MAVEN_HOME/conf/settings.xml`
+         sed -i "${num}a <mirror>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 1`a <id>aliyunmaven</id>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 2`a <mirrorOf>*</mirrorOf>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 3`a <name>Nexus</name>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 4`a <url>https://nexus-devops.dfcv.com.cn/repository/maven-central/</url>" $MAVEN_HOME/conf/settings.xml
+        sed -i "`expr $num + 5`a </mirror>" $MAVEN_HOME/conf/settings.xml
+        mvn clean install
 - name: Publish
   steps:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
-      tag: example-greenhouse:${CICD_EXECUTION_SEQUENCE}
+      tag: nexus-demo/example-greenhouse:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: http://192.168.120.128/
+      registry: registry-devops.dfcv.com.cn
 - name: Deploy
   steps:
   - applyYamlConfig:
