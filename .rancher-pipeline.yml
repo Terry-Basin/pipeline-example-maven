@@ -11,7 +11,7 @@ stages:
         sed -i "`expr $num + 3`a <name>Nexus</name>" $MAVEN_HOME/conf/settings.xml
         sed -i "`expr $num + 4`a <url>https://nexus-devops.dfcv.com.cn/repository/maven-public/</url>" $MAVEN_HOME/conf/settings.xml
         sed -i "`expr $num + 5`a </mirror>" $MAVEN_HOME/conf/settings.xml
-        mvn clean install
+        mvn clean install -X
 - name: Publish
   steps:
   - publishImageConfig:
